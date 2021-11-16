@@ -1,0 +1,17 @@
+Rejestracja:
+nazwa
+hasło
+potwierdzenie hasła
+Imię
+Nazwisko
+email
+wiek
+Kraj
+płeć
+nr telefonu
+
+
+
+
+
+
