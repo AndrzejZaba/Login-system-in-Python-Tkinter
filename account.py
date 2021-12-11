@@ -1,4 +1,4 @@
-from _typeshed import Self
+#from _typeshed import Self
 import re
 import tkinter as tk
 from tkinter import ttk  
@@ -58,28 +58,7 @@ def user_not_found():
     messagebox.showerror("Wrong username","User not found, try another username.")
 
 
-# Verification of given username and password
-def login_verify(username_to_verify, password_to_verify, username_entry, password_entry):
-    username = username_to_verify.get()
-    password = password_to_verify.get()
 
-    username_entry.delete(0,tk.END)
-    password_entry.delete(0,tk.END)
-
-
-    list_of_files = os.listdir("Users/")
-    if username in list_of_files:
-        file1 = open("Users/"+username, "r")
-        verify = file1.read().splitlines()
-        if password == verify[1]:
-            print("login success")
-            #login_success(login_screen)
-        else:
-            print("password has not been recognized")
-            password_not_recognised()
-    else:
-        print("User not found")
-        user_not_found()
 
 
 # Window with log in form
@@ -97,9 +76,30 @@ class SignInScreen(tk.Frame):
         tk.Label(self, text="Password * ", font=("Calibri", 13)).pack()
         self.password_entry_log = tk.Entry(self, textvariable=self.password_verify,font=("Calibri", 13)).pack()
 
-        tk.Button(self, text="Login", command=lambda: login_verify(self.username_verify, self.password_verify, self.username_entry_log, self.password_entry_log),pady=5,padx=15,font=("Calibri", 12)).pack()
+        tk.Button(self, text="Login", command=lambda: self.login_verify(self.username_verify, self.password_verify, self.username_entry_log, self.password_entry_log) ,pady=5,padx=15,font=("Calibri", 12)).pack()
+
+    # Verification of given username and password
+    def login_verify(username_to_verify, password_to_verify, username_entry, password_entry):
+        username = username_to_verify.get()
+        password = password_to_verify.get()
+
+        username_entry.delete(0,'end')
+        password_entry.delete(0,'end')
 
 
+        list_of_files = os.listdir("Users/")
+        if username in list_of_files:
+            file1 = open("Users/"+username, "r")
+            verify = file1.read().splitlines()
+            if password == verify[1]:
+                print("login success")
+                #login_success(login_screen)
+            else:
+                print("password has not been recognized")
+                password_not_recognised()
+        else:
+            print("User not found")
+            user_not_found()
 
 def register_user(register_data, entries, error_labels):
     validation_table = [0,0,0,0,0,0,0,0,0]
