@@ -1,4 +1,4 @@
-from tkinter import *
+import tkinter as tk
 import re
 import requests                             # generally to check if given e-mail exhist
 
@@ -117,7 +117,7 @@ def age_validation(entry_value, entry, error_label, display_text):
             entry.config(bg="#ffffff")
             return 1
     except:
-        entry.delete(0,END)
+        entry.delete(0,tk.END)
         entry_value=0
         display_text="You can not use other characters than numbers!"
         error_label.config(text=display_text)
