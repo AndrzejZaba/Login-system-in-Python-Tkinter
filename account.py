@@ -33,32 +33,14 @@ class CurrnetScreen(tk.Tk):
 class MainLogInScreen(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
+        master.change_geometry("300", "300")
+        
         tk.Label(self, text="Flight search", bg="grey", width="300", height="2", font=("Calibri", 13)).pack()
         tk.Label().pack()
         tk.Button(self,text="Login", width="30", command=lambda: master.switch_frame(SignInScreen), pady=10).pack()
         tk.Label().pack()
         tk.Button(self, text="Register", width="30", command=lambda:master.switch_frame(RegistrationScreen), pady=10).pack()
     
-
-# Happens when the sign-in procedure is complete --- username and password are correct 
-def login_success():
-    
-    #try:
-        #registration_window.destroy()
-    #except:
-        #print("")
-    print("SUCCES!")
-
-    
-def password_not_recognised():
-    messagebox.showerror("Wrong password","Wrong password, try again.")
-
-
-def user_not_found():
-    messagebox.showerror("Wrong username","User not found, try another username.")
-
-
-
 
 
 # Window with log in form
@@ -79,27 +61,46 @@ class SignInScreen(tk.Frame):
         tk.Button(self, text="Login", command=lambda: self.login_verify(self.username_verify, self.password_verify, self.username_entry_log, self.password_entry_log) ,pady=5,padx=15,font=("Calibri", 12)).pack()
 
     # Verification of given username and password
-    def login_verify(username_to_verify, password_to_verify, username_entry, password_entry):
+    def login_verify(self, username_to_verify, password_to_verify, username_entry, password_entry):
         username = username_to_verify.get()
         password = password_to_verify.get()
 
-        username_entry.delete(0,'end')
-        password_entry.delete(0,'end')
+        #username_entry.delete(0,'end')
+        #password_entry.delete(0,'end')
+        
+        # Happens when the sign-in procedure is complete --- username and password are correct 
+        def login_success():
+            
+            #try:
+                #registration_window.destroy()
+            #except:
+                #print("")
+            print("SUCCES!")
+
+        def user_not_found():
+            messagebox.showerror("Wrong username","User not found, try another username.")
+        
+        
+        def password_not_recognised():
+            messagebox.showerror("Wrong password","Wrong password, try again.")
 
 
-        list_of_files = os.listdir("Users/")
-        if username in list_of_files:
-            file1 = open("Users/"+username, "r")
-            verify = file1.read().splitlines()
-            if password == verify[1]:
+        self.list_of_files = os.listdir("Users/")
+        if username in self.list_of_files:
+            self.file1 = open("Users/"+username, "r")
+            self.verify = self.file1.read().splitlines()
+            if password == self.verify[1]:
                 print("login success")
-                #login_success(login_screen)
+                login_success()
             else:
                 print("password has not been recognized")
                 password_not_recognised()
         else:
             print("User not found")
             user_not_found()
+            
+
+
 
 def register_user(register_data, entries, error_labels):
     validation_table = [0,0,0,0,0,0,0,0,0]
@@ -153,7 +154,7 @@ def phone_number_color_white(event):
 class RegistrationScreen(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.change_geometry("300", "850")    # geometry ("300x850")
+        master.change_geometry("300", "950")    # geometry ("300x850")
     
 
         #global username, password, username_entry, password_entry, password_confirmation, password_confirmation_entry, email, email_entry, age, age_entry, name, name_entry, surname, surname_entry,nationality, nationality_entry, gender, phone_number, phone_number_entry            # Add remained to the registration form!!!
