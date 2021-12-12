@@ -29,7 +29,8 @@ class CurrnetScreen(tk.Tk):
         
     def change_geometry(self, first_dim, second_dim):
         self.geometry(first_dim+"x"+second_dim)
-     
+  
+# Screen with 2 options: Sign in | Register     
 class MainLogInScreen(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
@@ -42,8 +43,7 @@ class MainLogInScreen(tk.Frame):
         tk.Button(self, text="Register", width="30", command=lambda:master.switch_frame(RegistrationScreen), pady=10).pack()
     
 
-
-# Window with log in form
+# Window with sign in form
 class SignInScreen(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
@@ -53,20 +53,20 @@ class SignInScreen(tk.Frame):
         self.password_verify = tk.StringVar()
 
         tk.Label(self, text="Username * ", font=("Calibri", 13)).pack()
-        self.username_entry_log = tk.Entry(self, textvariable=self.username_verify,font=("Calibri", 13)).pack()
+        username_entry_log = tk.Entry(self, textvariable=self.username_verify,font=("Calibri", 13)).pack()
 
         tk.Label(self, text="Password * ", font=("Calibri", 13)).pack()
-        self.password_entry_log = tk.Entry(self, textvariable=self.password_verify,font=("Calibri", 13)).pack()
+        password_entry_log = tk.Entry(self, textvariable=self.password_verify,font=("Calibri", 13)).pack()
 
-        tk.Button(self, text="Login", command=lambda: self.login_verify(self.username_verify, self.password_verify, self.username_entry_log, self.password_entry_log) ,pady=5,padx=15,font=("Calibri", 12)).pack()
+        tk.Button(self, text="Login", command=lambda: self.login_verify(self.username_verify, self.password_verify, username_entry_log, password_entry_log) ,pady=5,padx=15,font=("Calibri", 12)).pack()
 
     # Verification of given username and password
     def login_verify(self, username_to_verify, password_to_verify, username_entry, password_entry):
         username = username_to_verify.get()
         password = password_to_verify.get()
 
-        #username_entry.delete(0,'end')
-        #password_entry.delete(0,'end')
+        #username_entry.delete(0,tk.END)
+        #password_entry.delete(0,tk.END)
         
         # Happens when the sign-in procedure is complete --- username and password are correct 
         def login_success():
@@ -98,65 +98,17 @@ class SignInScreen(tk.Frame):
         else:
             print("User not found")
             user_not_found()
-            
-
-
-
-def register_user(register_data, entries, error_labels):
-    validation_table = [0,0,0,0,0,0,0,0,0]
-    infos = []
-    # register_data is a list of StringVar - special TKinter variable, that can not be simple read
-    # So we need to create a list of Strings based on values of those StringVars
-    for item in register_data:                      
-        infos.append(item.get())
-
-
-    validation_table = check_entries(infos, entries, error_labels, validation_table)
-    
-    if all(validation_table):
-        file = open("Users/"+infos[0],"w")
         
-        # "len(infos)-1" because gender is the last one. 
-        # It's being written to the file separately, few lines below
-        # There was a problem when it was put in the loop, because 
-        # gender is radiobutton, not an entry
-        # Whole problem probably can be solved by an exception
-        for number in range(0,len(infos)-1):        
-            file.write(infos[number]+"\n")
-            entries[number].delete(0,tk.END)
-        file.write(infos[len(infos)-1])
-        file.close
-        #registration_window.destroy()
 
 
-
-
-# Binding functions
-def username_color_white(event):
-    username_entry.configure(bg="#ffffff")
-def password_color_white(event):
-    password_entry.configure(bg="#ffffff")
-def password_confirmation_color_white(event):
-    password_confirmation_entry.configure(bg="#ffffff")
-def name_color_white(event):
-    name_entry.configure(bg="#ffffff")
-def surname_color_white(event):
-    surname_entry.configure(bg="#ffffff")
-def email_color_white(event):
-    email_entry.configure(bg="#ffffff")
-def age_color_white(event):
-    age_entry.configure(bg="#ffffff")
-def phone_number_color_white(event):
-    phone_number_entry.configure(bg="#ffffff")
 
 
 # Window with registration form
 class RegistrationScreen(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.change_geometry("300", "950")    # geometry ("300x850")
+        master.change_geometry("300", "950")  
     
-
         #global username, password, username_entry, password_entry, password_confirmation, password_confirmation_entry, email, email_entry, age, age_entry, name, name_entry, surname, surname_entry,nationality, nationality_entry, gender, phone_number, phone_number_entry            # Add remained to the registration form!!!
         global username_entry, password_entry, password_confirmation_entry, email_entry, age_entry,  name_entry, surname_entry, nationality_entry, phone_number_entry
         self.username = tk.StringVar()
@@ -249,37 +201,78 @@ class RegistrationScreen(tk.Frame):
         
         # Final Registration button
         tk.Label(self, text="").grid(row=30,column=0,columnspan=2)
-        registration_button = tk.Button(self, text="Register", width=10, height=1, command=lambda: register_user(register_data, entries, error_labels),font=("Calibri", 13))
+        registration_button = tk.Button(self, text="Register", width=10, height=1, command=lambda: self.register_user(self.register_data, self.entries, self.error_labels),font=("Calibri", 13))
         registration_button.grid(row=31,column=0,columnspan=2)
         
         
         # Create all necessary lists
         # 
-        register_data = [self.username, self.password, self.password_confirmation, self.name, self.surname, self.email, self.age, self.nationality, self.phone_number, self.gender]       # gender deleted
+        self.register_data = [self.username, self.password, self.password_confirmation, self.name, self.surname, self.email, self.age, self.nationality, self.phone_number, self.gender]       # gender deleted
         infos = []
 
         # list of all entry widgets --- they are global, so without 'self.'  
-        entries = [username_entry, password_entry, password_confirmation_entry, name_entry, surname_entry, email_entry, age_entry, nationality_entry, phone_number_entry]
+        self.entries = [username_entry, password_entry, password_confirmation_entry, name_entry, surname_entry, email_entry, age_entry, nationality_entry, phone_number_entry]
 
 
         #list of all error labels --- labels below entries to show warnings and errors    
-        error_labels =[self.username_error_label, self.password_error_label, self.password_confirmation_error_label, self.name_error_label, self.surname_error_label, self.email_error_label, self.age_error_label, self.nationality_error_label, self.phone_number_error_label] 
-
-
-    
+        self.error_labels =[self.username_error_label, self.password_error_label, self.password_confirmation_error_label, self.name_error_label, self.surname_error_label, self.email_error_label, self.age_error_label, self.nationality_error_label, self.phone_number_error_label] 
 
 
         # Binding functions     -   maybe try to do it as another function
         # if entry clicked - Clear red highlight color of unproperly filed entrie
-        username_entry.bind("<FocusIn>",username_color_white)
-        password_entry.bind("<FocusIn>", lambda event: password_color_white(event))
-        password_confirmation_entry.bind("<FocusIn>",password_confirmation_color_white)
-        name_entry.bind("<FocusIn>",name_color_white)
-        surname_entry.bind("<FocusIn>",surname_color_white)
-        email_entry.bind("<FocusIn>",email_color_white)
-        age_entry.bind("<FocusIn>",age_color_white)
-        phone_number_entry.bind("<FocusIn>",phone_number_color_white)
+        username_entry.bind("<FocusIn>",self.username_color_white)
+        password_entry.bind("<FocusIn>", lambda event: self.password_color_white(event))
+        password_confirmation_entry.bind("<FocusIn>",self.password_confirmation_color_white)
+        name_entry.bind("<FocusIn>",self.name_color_white)
+        surname_entry.bind("<FocusIn>",self.surname_color_white)
+        email_entry.bind("<FocusIn>",self.email_color_white)
+        age_entry.bind("<FocusIn>",self.age_color_white)
+        phone_number_entry.bind("<FocusIn>",self.phone_number_color_white)
 
 
+    def register_user(self, register_data, entries, error_labels):
+        validation_table = [0,0,0,0,0,0,0,0,0]
+        self.infos = []
+        # register_data is a list of StringVar - special TKinter variable, that can not be simple read
+        # So we need to create a list of Strings based on values of those StringVars
+        for item in register_data:                      
+            self.infos.append(item.get())
 
+
+        validation_table = check_entries(self.infos, entries, error_labels, validation_table)
+        
+        if all(self.validation_table):
+            file = open("Users/"+self.infos[0],"w")
+            
+            # "len(infos)-1" because gender is the last one. 
+            # It's being written to the file separately, few lines below
+            # There was a problem when it was put in the loop, because 
+            # gender is radiobutton, not an entry
+            # Whole problem probably can be solved by an exception
+            for number in range(0,len(self.infos)-1):        
+                file.write(self.infos[number]+"\n")
+                entries[number].delete(0,tk.END)
+            file.write(self.infos[len(self.infos)-1])
+            file.close
+
+            # here should be instruction what to do after succesful registration (eg. close window or go to sign in screen)
+
+
+    # Binding functions
+    def username_color_white(self, event):
+        username_entry.configure(bg="#ffffff")
+    def password_color_white(self, event):
+        password_entry.configure(bg="#ffffff")
+    def password_confirmation_color_white(self, event):
+        password_confirmation_entry.configure(bg="#ffffff")
+    def name_color_white(self, event):
+        name_entry.configure(bg="#ffffff")
+    def surname_color_white(self, event):
+        surname_entry.configure(bg="#ffffff")
+    def email_color_white(self, event):
+        email_entry.configure(bg="#ffffff")
+    def age_color_white(self, event):
+        age_entry.configure(bg="#ffffff")
+    def phone_number_color_white(self, event):
+        phone_number_entry.configure(bg="#ffffff")
 
