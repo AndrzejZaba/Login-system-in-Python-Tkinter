@@ -1,11 +1,11 @@
-from tkinter import *  
+import tkinter as tk
 from entries_validation_functions import *
 
 
 
 def check_entries(infos, entries, error_labels, validation_table):
     
-    display_text = StringVar()
+    display_text = tk.StringVar()
     
 
     for index in range(0, len(infos)):

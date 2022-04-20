@@ -3,9 +3,6 @@ from tkcalendar import *
 from PIL import ImageTk,Image 
 from account import *
 
-root = Tk()
-
-account_window(root)
-
-root.mainloop()
-
+if __name__ == "__main__":
+    app = CurrnetScreen()
+    app.mainloop()

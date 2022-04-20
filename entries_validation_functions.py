@@ -1,14 +1,14 @@
-from tkinter import *
+import tkinter as tk
 import re
-import requests                             # generally to check if given e-mail exhist
+import requests                             # generally to check if given e-mail exists
 
 global nationalities
 nationalities = ['Polish', 'German', "French", "British", "Swedish", "Norwegian", "Finnish", 'Duch', 'Dannish', 'Belgian', 'Spannish', 'Portugeese', 'Greek', 'Russian', 'Belarussian', 'Latwian', 'Lithuanian', 'Slovakian', 'Austrian', 'Chech', 'Italian','American', 'Mecican', 'Canadian', 'Australian']
 
 
-# entry_value - value which user imput
+# entry_value - value which user input
 # entry - adequate entry widget
-# error_label - label widget beneth the entry widget
+# error_label - label widget below the entry widget
 # display_text - text to be displayed in error label
 
 def username_validation(entry_value, entry, error_label, display_text):
@@ -117,7 +117,7 @@ def age_validation(entry_value, entry, error_label, display_text):
             entry.config(bg="#ffffff")
             return 1
     except:
-        entry.delete(0,END)
+        entry.delete(0,tk.END)
         entry_value=0
         display_text="You can not use other characters than numbers!"
         error_label.config(text=display_text)
